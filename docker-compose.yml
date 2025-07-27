@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  web1:
+    build: ./app
+    container_name: web1
+    environment:
+      DB_HOST: db-master
+
+  web2:
+    build: ./app
+    container_name: web2
+    environment:
+      DB_HOST: db-master
+
+  web3:
+    build: ./app
+    container_name: web3
+    environment:
+      DB_HOST: db-master
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web1
+      - web2
+      - web3
+
+networks:
+  default:
+    external:
+      name: red-replicacion
